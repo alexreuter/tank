@@ -55,7 +55,7 @@ Make tank.size scalable.
   });
   /*************************************************************************************************************************************
                                                 VARIABLES *************************************************************************************************************************************/
-  var framerate = 60;
+  var framerate = 3;
   /*************************************************************************************************************************************
                                                 IMAGE CREATION *************************************************************************************************************************************/
   var tank = {
@@ -76,7 +76,8 @@ Make tank.size scalable.
   
   var turret ={
     img:document.getElementById("turret"),
-    angle:0
+    angle:10,
+    x:0
   };
   
 /*************************************************************************************************************************************
@@ -84,8 +85,9 @@ Make tank.size scalable.
   function animate()
   {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    turretLogic();
+    
     tankLogic();
+    turretLogic();
     grass();
     
   }
@@ -128,9 +130,35 @@ Make tank.size scalable.
                                                         TURRET *************************************************************************************************************************************/
   function turretLogic()
   {
-    ctx.translate(50, 35); 
-    ctx.rotate(20*Math.PI/180);
-    ctx.drawImage(turret.img,tank.x,tank.y,tank.size,tank.size);
+    
+//     ctx.save();
+//     ctx.beginPath();
+//     ctx.translate(tank.x+tank.size/2,tank.y+tank.size/2);
+//     ctx.rotate(turret.angle * Math.PI / 180);
+//     ctx.drawImage(turret.img,tank.x,tank.y,tank.size,tank.size);
+//     ctx.restore();
+    
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(tank.x+tank.size/2.12,tank.y+tank.size/2.12);
+    // 10,8
+//     ctx.fillRect(0,0,100,100)
+    ctx.rotate(turret.angle * Math.PI / 180);
+    ctx.drawImage(turret.img,-tank.size/2,-tank.size/2,tank.size,tank.size);
+    ctx.restore();
+    
+    turret.angle = turret.angle + 10;
+    
+    console.log(turret.angle);
+    
+    if (turret.angle>90)
+    {
+      turret.angle = -90;
+    }
+   
+    
+
+    
     
   }
 /*************************************************************************************************************************************
