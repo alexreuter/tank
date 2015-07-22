@@ -95,9 +95,9 @@ Make tank.size scalable.
   function animate()
   {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    turretLogic();
-    tankLogic();
     
+    tankLogic();
+    turretLogic();
     grass();
     
   }
