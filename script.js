@@ -52,10 +52,20 @@ Make tank.size scalable.
     {
       tank.speed = tank.speed + tank.frict;
     }
+    
+    if (e.keyCode == 38) {
+      //UP
+      turret.angle = turret.angle + 10;
+    }
+    
+    if (e.keyCode == 40) {
+      //DOWN
+      turret.angle = turret.angle - 10;
+    }
   });
   /*************************************************************************************************************************************
                                                 VARIABLES *************************************************************************************************************************************/
-  var framerate = 3;
+  var framerate = 60;
   /*************************************************************************************************************************************
                                                 IMAGE CREATION *************************************************************************************************************************************/
   var tank = {
@@ -85,9 +95,9 @@ Make tank.size scalable.
   function animate()
   {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    
-    tankLogic();
     turretLogic();
+    tankLogic();
+    
     grass();
     
   }
@@ -142,18 +152,21 @@ Make tank.size scalable.
     ctx.beginPath();
     ctx.translate(tank.x+tank.size/2.12,tank.y+tank.size/2.12);
     // 10,8
-//     ctx.fillRect(0,0,100,100)
     ctx.rotate(turret.angle * Math.PI / 180);
-    ctx.drawImage(turret.img,-tank.size/2,-tank.size/2,tank.size,tank.size);
+    ctx.drawImage(turret.img,-tank.size/2.12,-tank.size/2.12,tank.size,tank.size);
     ctx.restore();
     
-    turret.angle = turret.angle + 10;
+//     turret.angle = turret.angle + 10;
     
     console.log(turret.angle);
     
     if (turret.angle>90)
     {
       turret.angle = -90;
+    }
+    if (turret.angle<-90)
+    {
+      turret.angle = 90;
     }
    
     
