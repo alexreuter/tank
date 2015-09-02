@@ -22,6 +22,7 @@ Make tank.size scalable.
   $(window).resize(function(){
     grass();
     tank.resize();
+    ball.resize();
     canvas.width = window.innerWidth-(window.innerHeight*0.03);
     canvas.height = window.innerHeight-(window.innerHeight*0.03);
   });  
@@ -32,7 +33,22 @@ Make tank.size scalable.
   $(window).keydown(function(e) {
     //SPACE
     if (e.keyCode == 0 || e.keyCode == 32) {
+     
       
+      
+//       if(turret.angle>=0)
+//       {
+//         ball.horz = ball.energy*((turret.angle+90)/180);
+//         ball.vert = ball.energy - ball.horz;
+//       }
+//       if(turret.angle===90)
+//       {
+//         ball.vert = ball.energy - ball.horz;
+//       }
+      
+//       console.log("vert" + ball.vert);
+//       console.log("horz" + ball.horz);
+//       console.log("ang" + turret.angle);
     }
     
     //Left
@@ -80,26 +96,40 @@ Make tank.size scalable.
     },
     size:100,
     frict:1,
-    acc:20
+    acc:13
   };
   tank.resize();
   
   var turret ={
     img:document.getElementById("turret"),
-    angle:10,
+    angle:90,
     x:0
   };
+  
+  var ball = {
+    x:300,
+    y:300,
+    resize: function(){
+      this.size = canvas.width/480;
+    },
+    horz:0,
+    vert:0,
+    energy:10,
+    gravity:9.8,
+    air:3
+  };
+  ball.resize();
   
 /*************************************************************************************************************************************
                                                 ANIMATE FUNCTION *************************************************************************************************************************************/
   function animate()
   {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    
-    tankLogic();
+   
     turretLogic();
+    tankLogic();
     grass();
-    
+    bullet();
   }
   
 /*************************************************************************************************************************************
@@ -140,14 +170,6 @@ Make tank.size scalable.
                                                         TURRET *************************************************************************************************************************************/
   function turretLogic()
   {
-    
-//     ctx.save();
-//     ctx.beginPath();
-//     ctx.translate(tank.x+tank.size/2,tank.y+tank.size/2);
-//     ctx.rotate(turret.angle * Math.PI / 180);
-//     ctx.drawImage(turret.img,tank.x,tank.y,tank.size,tank.size);
-//     ctx.restore();
-    
     ctx.save();
     ctx.beginPath();
     ctx.translate(tank.x+tank.size/2.12,tank.y+tank.size/2.12);
@@ -156,24 +178,29 @@ Make tank.size scalable.
     ctx.drawImage(turret.img,-tank.size/2.12,-tank.size/2.12,tank.size,tank.size);
     ctx.restore();
     
-//     turret.angle = turret.angle + 10;
-    
-    console.log(turret.angle);
-    
-    if (turret.angle>90)
-    {
-      turret.angle = -90;
-    }
-    if (turret.angle<-90)
+    if (turret.angle>=90)
     {
       turret.angle = 90;
     }
+    if (turret.angle<=-90)
+    {
+      turret.angle = -90;
+    }
    
+  }
+  /*************************************************************************************************************************************
+                                                        BALL *************************************************************************************************************************************/
+  function bullet(){
     
-
     
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(ball.x,ball.y,ball.size,0,2*Math.PI);
+    ctx.stroke();
+    ctx.fill();
     
   }
+  
 /*************************************************************************************************************************************
                                                 ACTUALLY ANIMATING *************************************************************************************************************************************/
   setInterval(animate,1000/framerate);
